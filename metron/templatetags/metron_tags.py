@@ -11,7 +11,7 @@ register = template.Library()
 def analytics(context):
 	content = ""
 	for kind, codes in getattr(settings, "METRON_SETTINGS", {}).items():
-		code = codes.get(settings.SITE_ID)
+		code = codes.get(str(settings.SITE_ID))
 		if code is not None:
 			t = template.loader.get_template("metron/_%s.html" % kind)
 			content += t.render(template.Context({
@@ -20,7 +20,6 @@ def analytics(context):
 				"actions": activity.all(context["request"], kind)
 			}))
 	return content
-
 
 @register.simple_tag(takes_context=True)
 def adwords_conversion(context, key, conversion_value=0):
