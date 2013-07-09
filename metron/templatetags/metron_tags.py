@@ -21,19 +21,17 @@ def analytics(context):
             }))
     return content
 
+
 @register.simple_tag(takes_context=True)
 def adwords_conversion(context, key, conversion_value=0):
     content = ""
-    page_ids = getattr(settings, "METRON_ADWORDS_SETTINGS", {}).get(key)
-    if page_ids:
-        t = template.loader.get_template("metron/_adwords_conversion.html")
-        content = t.render(template.Context({
-            "conversion_id": page_ids["conversion_id"],
-            "conversion_format": page_ids["conversion_format"],
-            "conversion_label": page_ids["conversion_label"],
-            "conversion_value": conversion_value,
-        }))
+    ctx = getattr(settings, "METRON_CONVERSION_SETTINGS", {}).get(key)
+    if ctx:
+        t = template.loader.get_template("metron/_%s_conversion.html" % key)
+        ctx['conversion_value'] = conversion_value
+        content = t.render(template.Context(ctx))
     return content
+
 
 @register.simple_tag(takes_context=True)
 def adwords_remarketing(context, key):

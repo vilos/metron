@@ -9,6 +9,7 @@ Current analytics services supported:
 * Mixpanel
 * gaug.es
 * Google AdWords Conversion Tracking
+* seznam.cz Sklik
 
 
 Documentation
